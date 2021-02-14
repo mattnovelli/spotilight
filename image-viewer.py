@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import json
 import spotipy
-# from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
 from keys import spotify_secret
 from PIL import Image, ImageFont, ImageDraw
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 from PIL import Image
 import requests
+import time
 
 options = RGBMatrixOptions()
 options.rows = 32
@@ -24,11 +24,12 @@ sp = spotipy.Spotify(auth=token)
 
 def refreshUrl():
     current_track = sp.currently_playing()
-    if (current_track is "None"):
+    print('making a request..')
+    if current_track is None:
         print('nothing playing lmao')
     else:
         updateBoard(current_track['item']['album']['images'][1]['url'])
-        raw_input("image updated. press enter to continue.")
+        time.sleep(5)
         refreshUrl()
 
 def updateBoard(url):
@@ -41,3 +42,4 @@ def updateBoard(url):
     matrix.SetImage(canvas.convert("RGB"))
 
 refreshUrl()
+    
